@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Flap</title>
+<style>
+    * {margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', sans-serif;}
+    body {background: #1a1a2e; color: #e0e0e0; display:flex; flex-direction:column; min-height:100vh;}
+    nav {background: #162447; padding: 15px; display:flex; justify-content:space-between; align-items:center;}
+    nav h1 {color:#f73859;}
+    nav a {color:#e0e0e0; margin-left:20px; text-decoration:none; font-weight:bold;}
+    nav a:hover {color:#f73859;}
+    main {flex:1; display:flex; flex-direction:column; align-items:center; padding:20px;}
+    h2 {margin-bottom:15px; color:#f73859;}
+    input[type="text"], input[type="file"] {padding:10px; width:300px; border-radius:5px; border:none; margin-bottom:10px;}
+    button {padding:10px 20px; border:none; border-radius:5px; background:#f73859; color:#fff; cursor:pointer;}
+    button:hover {background:#ff0054;}
+    #chat-box {background:#0f0f1f; width:90%; max-width:600px; min-height:300px; margin:20px 0; padding:15px; border-radius:10px; overflow-y:auto;}
+    .message {margin-bottom:10px;}
+    .user-msg {color:#00f0ff;}
+    .bot-msg {color:#ffdd59;}
+    #file-section {margin-bottom:20px;}
+</style>
+</head>
+<body>
+
+<nav>
+    <h1>Agent Flap</h1>
+    <div>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
+</nav>
+
+<main>
+    <section id="file-section">
+        <h2>Upload Document</h2>
+        <input type="file" id="fileInput">
+        <button onclick="uploadFile()">Upload</button>
+    </section>
+
+    <section id="chat-section">
+        <h2>Chat with Agent Flap</h2>
+        <div id="chat-box"></div>
+        <input type="text" id="chatInput" placeholder="Ask a question">
+        <button onclick="sendMessage()">Send</button>
+    </section>
+</main>
+
+<script>
+    const chatBox = document.getElementById('chat-box');
+
+    function addMessage(sender, text) {
+        const msg = document.createElement('div');
+        msg.classList.add('message');
+        msg.classList.add(sender === 'user' ? 'user-msg' : 'bot-msg');
+        msg.innerText = (sender==='user' ? 'You: ' : 'Agent Flap: ') + text;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if(!text) return;
+        addMessage('user', text);
+        input.value = '';
+        setTimeout(()=>{
+            addMessage('bot', "This is a simulated Agent Flap response for: " + text);
+        }, 1000);
+    }
+
+    function uploadFile() {
+        const file = document.getElementById('fileInput').files[0];
+        if(!file) { alert("Select a file!"); return; }
+        addMessage('bot', `File "${file.name}" uploaded successfully!`);
+        document.getElementById('fileInput').value = '';
+    }
+</script>
+
+</body>
+</html>
